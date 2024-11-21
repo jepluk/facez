@@ -1,7 +1,7 @@
 import requests
-import sqlite
+import sqlite3
 
-class Main:
+class Start:
     def __init__(self, cookie: str) -> None:
         self.ses = requests.session()
         self.cookie = cookie
