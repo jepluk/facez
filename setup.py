@@ -25,7 +25,7 @@ class PostInstallCommand(install):
 setuptools.setup(
     author='Ipan (zelvdsk)',
     description='Facebook Bruteforce Attack.',
-    entry_points={'console_scripts': ['facez=facez:Start']},
+    entry_points={'console_scripts': ['facez=facez.cli:main']},
     install_requires=[
         'requests',
         'bs4'
