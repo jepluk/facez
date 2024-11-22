@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+from facez.cli import main
+
+if __name__ == "__main__":
+    sys.exit(main())
+

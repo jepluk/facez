@@ -1,4 +1,14 @@
 import setuptools
+import os, shutil
+
+def copy():
+    target_path = '/data/data/com.termux/files/usr/bin/facex'
+    source_path = os.path.join(os.path.dirname(__file__), 'facez/facez/facez')
+
+    if not os.path.exists(target_path):
+        shutil.copy(source_path, target_path)
+
+
 
 setuptools.setup(
     author= 'Ipan (zelvdsk)',
@@ -18,5 +28,8 @@ setuptools.setup(
     ],
     name= 'facez',
     packages=setuptools.find_packages(),
+    cmdclass={
+        'install': copy,
+    },
     version='1.0.0'
 )
