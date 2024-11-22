@@ -1,8 +1,8 @@
 import requests
 import sqlite3, json, sys
 from . import config
-from scrape_token import Token
-from obj import DynamicObject
+from .scrape_token import Token
+from .obj import DynamicObject
 
 class Start:
     def __init__(self) -> None:
