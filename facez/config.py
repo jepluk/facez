@@ -1,1 +1,1 @@
-DB_PATH = '~/.facez/database.db'
+DB_PATH = '/sdcard/database.db'
