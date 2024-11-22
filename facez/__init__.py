@@ -1,6 +1,6 @@
 import requests
 import sqlite3, json, sys
-import .config
+import config
 from scrape_token import Token
 from obj import DynamicObject
 
