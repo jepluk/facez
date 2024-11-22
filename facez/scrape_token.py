@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import re, sqlite3, sys
-import config
+from facez import config
 
 class Token:
     def __init__(self, session: object) -> None:
