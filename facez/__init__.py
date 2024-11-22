@@ -1,32 +1,36 @@
 import requests
-import sqlite3
+import sqlite3, json, sys
+import config
+from scrape_token import Token
+from obj import DynamicObject
 
 class Start:
-    def __init__(self, cookie: str) -> None:
+    def __init__(self) -> None:
         self.ses = requests.session()
-        self.cookie = cookie
+        with sqlite3.connect(config.DB_PATH) as db:
+            cursor = db.cursor()
+            cursor.execute('SELECT * FROM user')
+            data = cursor.fetchone()
 
-    def scrape_token(self) -> tuple:        
-        get = self.ses.get(
-            'https://www.facebook.com/x/oauth/status?client_id=124024574287414&wants_cookie_data=true&origin=1&input_token=&sdk=joey&redirect_uri=https://www.instagram.com/brutalid_/',
-            headers={
-                'Accept-Language': 'id,en;q=0.9',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
-                'Referer': 'https://www.instagram.com/',
-                'Host': 'www.facebook.com',
-                'Sec-Fetch-Mode': 'cors',
-                'Accept': '*/*',
-                'Connection': 'keep-alive',
-                'Sec-Fetch-Site': 'cross-site',
-                'Sec-Fetch-Dest': 'empty',
-                'Origin': 'https://www.instagram.com',
-                'Accept-Encoding': 'gzip, deflate',
-            },
-            cookies={'cookie': self.cookie}
-        )
+        if data is not None:
+            self.ses.cookies['cookie'] = data[0]
+            self.token = data[1] if data[1] else Token(session=self.ses).oauth()
 
-        print(get.headers)
-        if '"access_token":' in str(get.headers):
-            print('xxx')
-        else: 
-            print('no')
+        else:
+            sys.exit('\n[ WARN! ] Please set cookie.\nExample: facez --cookie "cookie string"')
+
+    def dump_friends(self, id: str, after: str=None) -> None:
+        api = self.ses.get('https://graph.facebook.com/'+ str(id), params={'access_token': self.token, 'fields': 'name,friends.fields(id, name)' +(f'.after({after})' if after else '')}).json()
+        convert = DynamicObject(api)
+
+        if convert.friends.data:
+            with sqlite3.connect(config.DB_PATH) as db:
+                for i in convert.friends.data:
+                    try:
+                        db.cursor().execute('INSERT INTO dump (id, name) VALUES (?,?)', (i.id, i.name))
+                    except sqlite3.IntegrityError:
+                        pass
+
+                db.commit()
+
+        return convert.friends.paging.cursors.after

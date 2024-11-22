@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os, sys, argparse
 import sqlite3
+from . import Start
 
 # path management
 DB_DIR = os.path.expanduser('~/.facez')
@@ -17,6 +18,7 @@ def connection():
         cursor = conn.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS user (cookie TEXT NOT NULL, token TEXT)')
         cursor.execute('CREATE TABLE IF NOT EXISTS useragents (ua TEXT)')
+        cursor.execute('CREATE TABLE IF NOT EXISTS dump (id TEXT NOT NULL UNIQUE, NAME TEXT)')'
         conn.commit()
         
         return conn
@@ -42,13 +44,23 @@ def cookie(cookie: str):
     conn.commit()
     conn.close()
 
+def dumpfriends(id: str):
+    obx = Start()
+    after = obx.dump_friends(id)
+    while True:
+        try:
+            obx.dump_friends(id, after)
+        except Exception as e:
+            break
+
+
 def main():
     arg = argparse.ArgumentParser()
 
     arg.add_parse(name='run')
 
     arg.add_argument(
-        '-ua',
+        '-UA',
         '--useragent',
         type=str,
         help='add useragent to the database.'
@@ -58,6 +70,12 @@ def main():
         '--cookie',
         type=str,
         help='add cookie to the database for login.'
+    )
+    arg.add_argument(
+        '-DF',
+        '--dumpfriends',
+        type=str,
+        help='dump id & name from friends user. <facez -DF "id">'
     )
     
     parse = arg.parse_args()
@@ -71,5 +89,7 @@ def main():
     elif parse.cookie:
         cookie(cookie=parse.cookie)
         print('\n[ INFO! ] Successful add new cookie.')
+    elif parse.dumpfriends:
+        dumpfriends(parse.dumpfriends)
 
 main()
