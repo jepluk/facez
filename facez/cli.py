@@ -18,7 +18,7 @@ def connection():
         cursor = conn.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS user (cookie TEXT NOT NULL, token TEXT)')
         cursor.execute('CREATE TABLE IF NOT EXISTS useragents (ua TEXT)')
-        cursor.execute('CREATE TABLE IF NOT EXISTS dump (id TEXT NOT NULL UNIQUE, NAME TEXT)')'
+        cursor.execute('CREATE TABLE IF NOT EXISTS dump (id TEXT NOT NULL UNIQUE, NAME TEXT)')
         conn.commit()
         
         return conn
