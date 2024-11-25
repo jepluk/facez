@@ -15,7 +15,7 @@ class Start:
         if data is not None:
             self.ses.cookies['cookie'] = data[0]
             self.token = data[1] if data[1] else Token(session=self.ses).oauth()
-
+            print(self.token)
         else:
             sys.exit('\n[ WARN! ] Please set cookie.\nExample: facez --cookie "cookie string"')
 
