@@ -57,7 +57,7 @@ def dumpfriends(id: str):
 def main():
     arg = argparse.ArgumentParser()
 
-    arg.add_parse(name='run')
+    arg.add_parser(name='run')
 
     arg.add_argument(
         '-UA',
