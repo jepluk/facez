@@ -84,5 +84,6 @@ def main():
     print(parse)
     cookie(cookie=parse.cookie)
     print('\n[ INFO! ] Successful add new cookie.')
+    Start()
     
 main()
