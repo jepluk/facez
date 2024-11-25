@@ -57,9 +57,9 @@ def dumpfriends(id: str):
 def main():
     argo = argparse.ArgumentParser()
 
-    arg = argo.add_subparsers(title='action', dest='action', required=True)
+    argx = argo.add_subparsers(title='action', dest='action', required=True)
 
-    arg.add_parser(name='set')
+    arg = argx.add_parser(name='set')
 
     arg.add_argument(
         '-UA',
