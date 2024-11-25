@@ -55,9 +55,11 @@ def dumpfriends(id: str):
 
 
 def main():
-    arg = argparse.ArgumentParser()
+    argo = argparse.ArgumentParser()
 
-    arg.add_parser(name='run')
+    arg = argo.add_subparsers(title='action', dest='action', required=True)
+
+    arg.add_parser(name='set')
 
     arg.add_argument(
         '-UA',
@@ -83,12 +85,13 @@ def main():
     if parse.action == 'run':
         from .facebook import Main
         Main()
-    elif parse.useragent:
-        useragent(ua=parse.useragent)
-        print('\n[ INFO! ] Successful add new useragent.')
-    elif parse.cookie:
-        cookie(cookie=parse.cookie)
-        print('\n[ INFO! ] Successful add new cookie.')
+    elif parse.action == 'set':
+        if parse.useragent:
+            useragent(ua=parse.useragent)
+            print('\n[ INFO! ] Successful add new useragent.')
+        elif parse.cookie:
+            cookie(cookie=parse.cookie)
+            print('\n[ INFO! ] Successful add new cookie.')
     elif parse.dumpfriends:
         dumpfriends(parse.dumpfriends)
 
