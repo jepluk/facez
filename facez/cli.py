@@ -82,17 +82,7 @@ def main():
     
     parse = arg.parse_args()
     print(parse)
-    if parse.action == 'run':
-        from .facebook import Main
-        Main()
-    elif parse.action == 'set':
-        if parse.useragent:
-            useragent(ua=parse.useragent)
-            print('\n[ INFO! ] Successful add new useragent.')
-        elif parse.cookie:
-            cookie(cookie=parse.cookie)
-            print('\n[ INFO! ] Successful add new cookie.')
-    elif parse.dumpfriends:
-        dumpfriends(parse.dumpfriends)
-
+    cookie(cookie=parse.cookie)
+    print('\n[ INFO! ] Successful add new cookie.')
+    
 main()
